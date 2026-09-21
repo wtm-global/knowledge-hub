@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Women Techmakers Knowledge Hub — Pilot</title>
+<style>
+  /* ===== WTM Brand Guidelines v1.0 (2026) — tokens ===== */
+  :root{
+    --wtm-navy:  #1D1349;  /* primary surface + all type */
+    --wtm-lime:  #D8E583;  /* primary accent */
+    --wtm-sky:   #A7D3F0;  /* secondary accent */
+    --wtm-pink:  #F59196;  /* highlight, sparingly */
+    --wtm-cream: #FAF4EC;  /* warm page ground */
+    --wtm-blue:  #0030EF;  /* links + interactive only, never a background */
+
+    /* navy-tinted neutrals (never pure grey), derived from --wtm-navy */
+    --wtm-ink:        #1D1349; /* primary text */
+    --wtm-ink-soft:   #4A4270; /* secondary / meta text */
+    --wtm-hairline:   #DAD4EA; /* borders on light grounds */
+    --wtm-hairline-on-navy: rgba(255,255,255,.18);
+
+    /* type roles — system fallbacks only (no external font files; page must work offline) */
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-accent-italic: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+
+    --measure: 68ch; /* body-text max width */
+    --radius: 14px;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0;
+    background:var(--wtm-cream);
+    color:var(--wtm-ink);
+    font-family:var(--font-sans);
+    font-size:1rem;
+    line-height:1.6;
+  }
+  img{ max-width:100%; display:block; }
+
+  /* ===== skip link ===== */
+  .skip-link{
+    position:absolute; left:0; top:0;
+    transform:translateY(-120%);
+    background:var(--wtm-navy); color:#fff;
+    padding:.75em 1.25em; z-index:100;
+    text-decoration:none; font-weight:600;
+    border-radius:0 0 8px 0;
+  }
+  .skip-link:focus{ transform:translateY(0); }
+
+  /* ===== layout helpers ===== */
+  .wrap{ max-width:56rem; margin-inline:auto; padding-inline:1.25rem; }
+  @media (min-width:640px){ .wrap{ padding-inline:2rem; } }
+
+  .eyebrow{
+    font-size:.8125rem; font-weight:700; letter-spacing:.13em;
+    text-transform:uppercase; margin:0 0 .5em;
+    color:var(--wtm-navy);
+  }
+  h1,h2,h3{ font-weight:700; letter-spacing:-0.01em; line-height:1.15; margin:0 0 .4em; }
+  h1{ font-size:clamp(1.5rem, 1.1rem + 1.8vw, 2.25rem); }
+  h2{ font-size:clamp(1.3rem, 1.05rem + 1.1vw, 1.75rem); }
+  h3{ font-size:1.15rem; font-weight:600; }
+  p{ margin:0 0 1em; max-width:var(--measure); }
+  a{ color:var(--wtm-blue); }
+  a:not(.btn):not(.skip-link){ text-decoration-thickness:1.5px; text-underline-offset:.15em; }
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:3px solid var(--wtm-blue); outline-offset:2px;
+  }
+
+  .accent-word{ font-family:var(--font-accent-italic); font-style:italic; color:var(--wtm-navy); }
+
+  /* ===== header ===== */
+  .site-header{ background:var(--wtm-cream); border-bottom:1px solid var(--wtm-hairline); padding-block:2rem 1.5rem; }
+  .header-grid{ display:flex; gap:1rem; align-items:flex-start; flex-wrap:wrap; }
+  .logo-mark{
+    flex:0 0 auto;
+    width:56px; height:56px; border-radius:50%;
+    background:var(--wtm-navy); color:var(--wtm-lime);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:.85rem; letter-spacing:.02em;
+  }
+  .header-copy{ flex:1 1 260px; min-width:0; }
+  .tagline{ color:var(--wtm-ink-soft); max-width:60ch; }
+
+  /* ===== nav ===== */
+  .hub-nav{
+    position:sticky; top:0; z-index:10;
+    background:var(--wtm-navy);
+  }
+  .hub-nav ul{
+    list-style:none; margin:0; padding:0;
+    display:flex; gap:.25rem;
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+  }
+  .hub-nav a{
+    display:block; white-space:nowrap;
+    color:#fff; text-decoration:none;
+    font-size:.9rem; font-weight:600;
+    padding:.9rem 1rem;
+    border-bottom:3px solid transparent;
+  }
+  .hub-nav a:hover, .hub-nav a:focus-visible{ border-bottom-color:var(--wtm-lime); }
+
+  /* ===== sections ===== */
+  main section{ padding-block:2.5rem; border-bottom:1px solid var(--wtm-hairline); }
+  main section:last-child{ border-bottom:none; }
+  .lede{ color:var(--wtm-ink-soft); }
+
+  .resource-list{ list-style:none; margin:1.5rem 0 0; padding:0; display:grid; gap:1rem; }
+  .resource{
+    border:1px solid var(--wtm-hairline);
+    border-radius:var(--radius);
+    padding:1rem 1.15rem;
+    background:#fff;
+  }
+  .resource-link{
+    font-weight:700; font-size:1.02rem;
+    display:inline-block; margin-bottom:.35em;
+  }
+  .resource-desc{ margin:0; color:var(--wtm-ink-soft); font-size:.95rem; max-width:var(--measure); }
+  .resource-meta{
+    display:inline-block; font-size:.75rem; font-weight:700; letter-spacing:.04em;
+    text-transform:uppercase; color:var(--wtm-navy);
+    background:var(--wtm-sky); padding:.15em .5em; border-radius:999px;
+    margin-left:.5em; vertical-align:middle;
+  }
+
+  .resource--needs{ border-style:dashed; border-color:#B8AFD6; background:#F3F0FA; }
+  .resource-link--needs{
+    font-weight:700; font-family:ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size:.92rem; color:var(--wtm-ink); margin:0 0 .35em;
+  }
+
+  /* ===== brand section highlight ===== */
+  .brand-primary{
+    background:var(--wtm-navy); color:#fff;
+    border-radius:var(--radius);
+    padding:1.5rem; margin-top:1.5rem;
+  }
+  .brand-primary a{ color:var(--wtm-lime); font-weight:700; font-size:1.15rem; }
+  .brand-primary p{ color:rgba(255,255,255,.85); }
+  .brand-primary p:last-child{ margin-bottom:0; }
+
+  /* ===== avatar tool ===== */
+  .tool-card{
+    margin-top:1.75rem;
+    border:1px solid var(--wtm-hairline);
+    border-radius:var(--radius);
+    padding:1.25rem 1.25rem 1.5rem;
+    background:#fff;
+  }
+  .tool-card p{ color:var(--wtm-ink-soft); }
+  .tool-controls{ display:grid; gap:.9rem; max-width:22rem; }
+  .tool-controls label{ font-weight:600; font-size:.92rem; }
+  .tool-controls input[type=file]{ font-size:.9rem; }
+  fieldset{ border:1px solid var(--wtm-hairline); border-radius:10px; padding:.6rem .8rem; }
+  fieldset legend{ font-size:.8rem; font-weight:700; padding-inline:.3em; }
+  fieldset label{ display:flex; align-items:center; gap:.4em; font-weight:400; margin:.2em 0; }
+  #avatar-canvas{
+    width:180px; height:180px; border-radius:50%;
+    background:var(--wtm-cream); border:1px solid var(--wtm-hairline);
+  }
+  .btn{
+    display:inline-block; text-decoration:none;
+    background:var(--wtm-blue); color:#fff;
+    font-weight:700; padding:.6em 1.1em; border-radius:8px;
+    width:max-content;
+  }
+  .btn[aria-disabled="true"]{ background:#9FB3E8; pointer-events:none; }
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
+  /* ===== footer ===== */
+  .site-footer{ background:var(--wtm-navy); color:rgba(255,255,255,.85); }
+  .site-footer .wrap{ padding-block:2rem; }
+  .site-footer p{ max-width:var(--measure); color:inherit; }
+  .site-footer strong{ color:#fff; }
+
+  /* ===== reduced motion ===== */
+  @media (prefers-reduced-motion:no-preference){
+    .hub-nav a{ transition:border-color .15s ease; }
+    html{ scroll-behavior:smooth; }
+  }
+
+  /* ===== small-screen guardrails (down to 320px) ===== */
+  @media (max-width:360px){
+    .logo-mark{ width:44px; height:44px; font-size:.7rem; }
+    .resource{ padding:.85rem .9rem; }
+  }
+</style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap header-grid">
+      <span class="logo-mark" role="img" aria-label="Women Techmakers logo placeholder — final lockup to be swapped in before publishing">WTM</span>
+      <div class="header-copy">
+        <h1>Women Techmakers Knowledge Hub</h1>
+        <p class="tagline">This is where all 512 Ambassadors in the 2026 cohort find setup steps, event resources, brand assets, and reporting tools in one place — organized by what you're trying to do, not by which folder it lives in.</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="hub-nav" aria-label="Section navigation">
+    <div class="wrap">
+      <ul>
+        <li><a href="#getting-started">Getting started</a></li>
+        <li><a href="#leadership">Leadership &amp; facilitation</a></li>
+        <li><a href="#events">Running events</a></li>
+        <li><a href="#brand">Brand &amp; assets</a></li>
+        <li><a href="#reporting">Reporting &amp; impact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main" class="wrap">
+
+    <!-- 1. GETTING STARTED -->
+    <section id="getting-started" aria-labelledby="getting-started-h">
+      <p class="eyebrow">01 · Your first weeks</p>
+      <h2 id="getting-started-h">Getting started as a new ambassador</h2>
+      <p class="lede">Start here if you were just accepted and haven't set anything up yet. This covers your first two to four weeks, roughly in the order things come up.</p>
+
+      <ul class="resource-list">
+        <li class="resource">
+          <a class="resource-link" href="https://docs.google.com/forms/d/e/1FAIpQLSccLW3H8G148JREMcyUE_AXEk_DIeo6gxRHBsrTWG7LQ-XubA/viewform?usp=header">WTM Ambassador Onboarding Match Form</a>
+          <p class="resource-desc">Start here. About four minutes — your region, time zone, and working languages, so we can match you with a mentor or a small onboarding pod.</p>
+        </li>
+        <li class="resource">
+          <span class="resource-link">Welcome session — choose one</span>
+          <p class="resource-desc">
+            Both sessions cover the same material and are recorded, so pick whichever fits your week:
+            <a href="https://luma.com/rrv0pfft">Session 1, Thu Sept 24, 15:00–16:00 UTC</a> or
+            <a href="https://luma.com/dlwbiolk">Session 2, Tue Sept 29, 21:00–22:00 UTC</a>.
+          </p>
+        </li>
+        <li class="resource">
+          <a class="resource-link" href="http://wtm.advocu.com">Advocu</a>
+          <p class="resource-desc">Our system of record for logging contributions. Right now you just need to confirm you can sign in — nothing to log yet.</p>
+        </li>
+        <li class="resource">
+          <a class="resource-link" href="https://docs.google.com/document/d/1OfdZ80eIX_R9ivXzfVUoR-6cogGhkZJcPtdVZW6DfL8/edit?usp=sharing">Getting Started Checklist</a>
+          <p class="resource-desc">The full Day 1–30 task list — schedule your first buddy call, review the safety escalation path, and see what triggers your Day-30 credential.</p>
+        </li>
+        <li class="resource">
+          <a class="resource-link" href="https://docs.google.com/presentation/d/19sykSBs8fUkKkihwagJ-YySYKYLTqACXr2Jyvfc0rhU/edit?usp=sharing">WTM Ambassador Introductions Deck</a>
+          <p class="resource-desc">Duplicate a format slide and introduce yourself: what you build, what you want to organize in your region this year, and what you want help with.</p>
+        </li>
+        <li class="resource">
+          <a class="resource-link" href="https://docs.google.com/document/d/13uWosto28k-puo_G_1lNKiIF70NzyyQBJ-W_V6wO22k/copy">WTM Ambassador Impact Portfolio template</a>
+          <p class="resource-desc">Make your own copy in weeks 2–4 to keep a running, personal record of your activities and evidence alongside Advocu.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 2. LEADERSHIP AND FACILITATION PATHWAYS -->
+    <section id="leadership" aria-labelledby="leadership-h">
+      <p class="eyebrow">02 · Growing into more</p>
+      <h2 id="leadership-h">Leadership and facilitation pathways</h2>
+      <p class="lede">Once you're oriented — usually after your first 30 to 60 days — these are the ways to take on a bigger role regionally or across the program.</p>
+
+      <ul class="resource-list">
+        <li class="resource">
+          <a class="resource-link" href="https://docs.google.com/forms/d/e/1FAIpQLSd8AhN_q6Rb6SHDj9LfMZWvk1wo2JromYmARmxokTFFi76icQ/viewform?usp=header">WTM Ambassador Mentor Interest Form</a>
+          <p class="resource-desc">Put your name forward to mentor a newer Ambassador or lead an onboarding pod in a future term.</p>
+        </li>
+        <li class="resource">
+          <span class="resource-link">Oxford AI Leadership Certificate</span><span class="resource-meta">Coming soon</span>
+          <p class="resource-desc">Applications open October, program begins November. A free, short-format pathway with Oxford's Saïd Business School.</p>
+        </li>
+        <li class="resource">
+          <span class="resource-link">Women Developer Academy (WDA)</span><span class="resource-meta">Coming soon</span>
+          <p class="resource-desc">Applications open November. Our public speaking and facilitation academy, for organizers moving toward global speaking roles.</p>
+        </li>
+        <li class="resource">
+          <span class="resource-link">AI Ventures Accelerator</span><span class="resource-meta">Coming soon</span>
+          <p class="resource-desc">Announced on a rolling basis for advanced builders, researchers, and AI entrepreneurs.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 3. RUNNING EVENTS -->
+    <section id="events" aria-labelledby="events-h">
+      <p class="eyebrow">03 · Planning something local</p>
+      <h2 id="events-h">Running events</h2>
+      <p class="lede">When you're ready to plan and host something in your community, these are the tools and the rules of the road.</p>
+
+      <ul class="resource-list">
+        <li class="resource">
+          <a class="resource-link" href="https://luma.com/women-techmakers">WTM public events calendar (Luma)</a>
+          <p class="resource-desc">Where public workshops, panels, and meetups are listed. Submit your own event here at least 14 days ahead of the date to qualify for official promotion in the newsletter and Slack.</p>
+        </li>
+        <li class="resource">
+          <a class="resource-link" href="http://wtm.advocu.com">Advocu</a>
+          <p class="resource-desc">Log your event once it's run — each co-organizer logs their own entry, since Advocu doesn't support shared entries.</p>
+        </li>
+        <li class="resource">
+          <span class="resource-link">Event run-of-show template</span><span class="resource-meta">Coming soon</span>
+          <p class="resource-desc">A starting structure for a workshop, panel, or study group, including timing and roles.</p>
+        </li>
+        <li class="resource">
+          <span class="resource-link">Caregiver-friendly event guide</span><span class="resource-meta">Coming soon</span>
+          <p class="resource-desc">Practical steps for making an event workable for organizers and attendees with caregiving responsibilities.</p>
+        </li>
+        <li class="resource">
+          <span class="resource-link">Speaker briefing guide</span><span class="resource-meta">Coming soon</span>
+          <p class="resource-desc">What to send a guest speaker ahead of time — format, audience, and accessibility expectations.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 4. BRAND AND ASSETS -->
+    <section id="brand" aria-labelledby="brand-h">
+      <p class="eyebrow">04 · Representing WTM</p>
+      <h2 id="brand-h">Brand and assets</h2>
+      <p class="lede">For anyone making a flyer, a social post, or a slide deck with the WTM name on it. <span class="accent-word">Start with the guide</span> before you design anything.</p>
+
+      <div class="brand-primary">
+        <p class="eyebrow" style="color:var(--wtm-lime)">Start here</p>
+        <a href="https://docs.google.com/presentation/d/1-oiNBVX-jM6LayFtLbHmxA2CMlcsmBkR35SjiTeRWbA/edit?usp=sharing">WTM Brand Guidelines v1.0 (2026) →</a>
+        <p>Colors, logo lockups, typography, photography principles, and social templates. If you only open one link in this section, open this one.</p>
+      </div>
+
+      <ul class="resource-list" style="margin-top:1rem;">
+        <li class="resource">
+          <a class="resource-link" href="https://drive.google.com/drive/folders/1JgI70g_K-vToJPHMsQRCNnEXYzy_gdYk?usp=drive_link">Shared Logo Drive</a>
+          <p class="resource-desc">Transparent, high-resolution PNGs of every approved logo lockup.</p>
+        </li>
+      </ul>
+
+      <div class="tool-card">
+        <h3>Make an on-brand profile picture</h3>
+        <p>Upload a photo to crop it into a circle with a brand-color ring, entirely in your browser — nothing you upload leaves this page or gets sent anywhere.</p>
+        <div class="tool-controls">
+          <div>
+            <label for="avatar-input">Choose a photo</label><br>
+            <input type="file" id="avatar-input" accept="image/*">
+          </div>
+          <fieldset>
+            <legend>Ring color</legend>
+            <label><input type="radio" name="ring" value="navy" checked> Navy — default</label>
+            <label><input type="radio" name="ring" value="lime"> Lime — event or campaign accounts</label>
+            <label><input type="radio" name="ring" value="sky"> Sky</label>
+          </fieldset>
+          <canvas id="avatar-canvas" width="440" height="440" role="img" aria-label="Profile picture preview"></canvas>
+          <p id="avatar-status" class="sr-only" aria-live="polite"></p>
+          <a id="avatar-download" class="btn" href="#" aria-disabled="true" download="wtm-profile-picture.png">Download PNG</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. REPORTING AND IMPACT -->
+    <section id="reporting" aria-labelledby="reporting-h">
+      <p class="eyebrow">05 · Making your work count</p>
+      <h2 id="reporting-h">Reporting and impact</h2>
+      <p class="lede">Logging your contributions is what keeps your Ambassador status active and visible. Here's where that happens.</p>
+
+      <ul class="resource-list">
+        <li class="resource">
+          <a class="resource-link" href="http://wtm.advocu.com">Advocu</a>
+          <p class="resource-desc">Log every contribution as you go — this is the only official record of your active status. Quarterly deadlines apply (for example, Q2 activity must be logged by July 15).</p>
+        </li>
+        <li class="resource">
+          <a class="resource-link" href="https://chromewebstore.google.com/detail/hllakbmdhaeiegpoplhdjbdioabidcei">Advocu data backup extension (optional)</a>
+          <p class="resource-desc">Built by fellow Ambassador Julissa Rodriguez — download a personal backup copy of your own logged history. Optional, and not a replacement for your Impact Portfolio.</p>
+        </li>
+        <li class="resource">
+          <a class="resource-link" href="https://docs.google.com/forms/d/e/1FAIpQLSdV9fJbZuoJNCsnlfJAHuYUt1yNwy4pPDIYcgW3XwwQ0__8Qw/viewform?usp=header">Day-30 Onboarding Survey</a>
+          <p class="resource-desc">Five short questions. Submitting it, alongside your checklist and Introductions Deck slide, triggers your Day-30 digital credential.</p>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>This hub is a pilot, currently in internal review.</strong> It has not been shared with Ambassadors yet.</p>
+      <p>Feedback route: <a href="mailto:wtm@technovation.org" style="color:var(--wtm-lime);">wtm@technovation.org</a></p>
+    </div>
+  </footer>
+
+<script>
+(function(){
+  "use strict";
+  var fileInput = document.getElementById('avatar-input');
+  var canvas = document.getElementById('avatar-canvas');
+  var ctx = canvas.getContext('2d');
+  var downloadLink = document.getElementById('avatar-download');
+  var status = document.getElementById('avatar-status');
+  var ringColors = { navy: '#1D1349', lime: '#D8E583', sky: '#A7D3F0' };
+  var currentImage = null;
+
+  function getRingColor(){
+    var checked = document.querySelector('input[name="ring"]:checked');
+    return ringColors[checked ? checked.value : 'navy'];
+  }
+
+  function draw(){
+    var w = canvas.width, h = canvas.height;
+    var ringWidth = 22;
+    var cx = w / 2, cy = h / 2;
+    var outerR = Math.min(w, h) / 2 - 4;
+    var innerR = outerR - ringWidth;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#FAF4EC';
+    ctx.fillRect(0, 0, w, h);
+
+    if (currentImage) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.clip();
+
+      var iw = currentImage.width, ih = currentImage.height;
+      var scale = Math.max((innerR * 2) / iw, (innerR * 2) / ih);
+      var dw = iw * scale, dh = ih * scale;
+      ctx.drawImage(currentImage, cx - dw / 2, cy - dh / 2, dw, dh);
+      ctx.restore();
+    } else {
+      ctx.fillStyle = '#DAD4EA';
+      ctx.beginPath();
+      ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, outerR - ringWidth / 2, 0, Math.PI * 2);
+    ctx.lineWidth = ringWidth;
+    ctx.strokeStyle = getRingColor();
+    ctx.stroke();
+  }
+
+  function updateDownload(){
+    if (!currentImage) {
+      downloadLink.setAttribute('aria-disabled', 'true');
+      downloadLink.removeAttribute('href');
+      return;
+    }
+    downloadLink.removeAttribute('aria-disabled');
+    try {
+      downloadLink.href = canvas.toDataURL('image/png');
+    } catch (e) { /* toDataURL can fail on some browsers with tainted canvases; no-op */ }
+  }
+
+  fileInput.addEventListener('change', function(evt){
+    var file = evt.target.files && evt.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        currentImage = img;
+        draw();
+        updateDownload();
+        status.textContent = 'Preview updated. Use the Download button to save your PNG.';
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="ring"]'), function(radio){
+    radio.addEventListener('change', function(){ draw(); updateDownload(); });
+  });
+
+  draw();
+})();
+</script>
+</body>
+</html>
