@@ -1,6 +1,6 @@
 # Women Techmakers Knowledge Hub
 
-Status: **Pilot, internal review.** Not yet shared with Ambassadors.
+Status: **Live.** In active use by Women Techmakers Ambassadors.
 
 This repo holds the pared-down v1 of the WTM Knowledge Hub: a single static
 `index.html` file with no build step and no external dependencies, so it
@@ -8,10 +8,8 @@ works fully offline and loads fast on a slow connection.
 
 ## Viewing it
 
-Once GitHub Pages is turned on for this repo (Settings → Pages → Source:
-`main` branch, `/ (root)` folder), the live page is at:
-
-`https://<org-or-username>.github.io/<repo-name>/`
+The live page is at https://wtm-global.github.io/knowledge-hub/. GitHub Pages
+publishes it from the `main` branch, `/ (root)` folder.
 
 ## Editing it
 
